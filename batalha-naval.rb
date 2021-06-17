@@ -1,19 +1,31 @@
 require "ruby2d"
-require_relative "board"
-require_relative "grid"
+require_relative "./grid.rb"
 
-grid = Grid.new
-grid.draw_grid
+set background: "navy"
+set width: 1155, height: 600
 
-player_1_board = Board.new # tabuleiro do jogador
-player_2_board = Board.new # tabuleiro do computador
+tabuleiro = Grid.new
+pressed = false # var. para saber se alguma tecla já foi pressionada
 
-#fazer controle de jogadas: hum. x comp.
 on :mouse_down do |event|
-  position = grid.board_position_clicked(event)
-  player_1_board.map_click_on_grid_in_board(position[1], position[0])
-  player_1_board.print_grid()
-  #grid.clicked()
+  if !pressed
+    tabuleiro.mapShip(tabuleiro.getPosition(event.x, event.y))
+  else
+    if tabuleiro.containsShip?(tabuleiro.getPosition(event.x, event.y))
+      # juntar essas duas funções em uma só: jogada certa
+      tabuleiro.contains(event.x, event.y)
+      tabuleiro.revealShip(tabuleiro.getPosition(event.x, event.y))
+      #verificar se alguém ganhou
+    end
+  end
 end
 
-grid.show
+# parte de teste: quando apertar alguma tecla, começa a parte de adivinhar as posições
+on :key_down do |event|
+  pressed = true
+  tabuleiro.message.text = "ACHE OS BARCOS"
+  tabuleiro.message2.remove
+  tabuleiro.hideShips
+end
+
+show
