@@ -6,6 +6,7 @@ class Grid
   def initialize
     @player1 = [] #array de objetos - quadrados
     @player1Navios = [] #array onde estará mapeado os navios
+    @@tipos_navios = { 1 => "submarino", 3 => "navio_encouracado", 4 => "navio_de_guerra", 6 => "porta_avioes" }
     #Tabela de posicoes dos quadrados do tabuleiro, cada quadrado possui 50x50 ------------
     @positions = [[0, 0], [50, 0], [100, 0], [150, 0], [200, 0], [250, 0], [300, 0], [350, 0], [400, 0], [450, 0],
                   [0, 50], [50, 50], [100, 50], [150, 50], [200, 50], [250, 50], [300, 50], [350, 50], [400, 50], [450, 50],
@@ -47,16 +48,49 @@ class Grid
 
   # mudar o nome dessas funções
 
-  def mapShip(i) # posiciona um submarino na posicao indicada
-    @player1Navios[i] = Image.new(
-      "images/sub.png",
-      x: @player1[i].x,
-      y: @player1[i].y,
-      width: 50, height: 50,
-      opacity: 100,
-    )
+  def shipFits?(i, ship_size)
+    #compara o primeiro algarismo da posição onde começa o barco com o primeiro algarismo da posição onde ele termina.
+    #se o segundo desses for maiosr, o barco termina em outra linha.
+    # possui um caso especial para a primeira linha: se o fim do barco ficar em uma posição maior que 9, já vai estar em outra linha
+    # verifica também se o fim do barco ultrapassaria a última posição
+    fits_line_size = !(((0..9) === i && i + (ship_size - 1) > 9) ||
+                       (!((0..9) === i) && (i + (ship_size - 1)).to_s[0].to_i > (i).to_s[0].to_i) ||
+                       i + (ship_size - 1) > 99)
 
-    @player1[i].color = "#87CEEB" # teste apenas; p/ destacar as casas escolhidas até o momento
+    is_range_free = true
+
+    # verifica se todos os quadrados, do começo ao fim do barco, estão desocupados
+    for j in i..i + ship_size - 1
+      if containsShip?(j)
+        is_range_free = false
+        break
+      end
+    end
+
+    # se ambas as condições forem atendidas, o quadradinho escolhido pode abrigar o barco
+    fits_line_size && is_range_free
+  end
+
+  # recebe a posição que se pretende colocar o barco e o tamanho do barco
+  # com base no tamanho do barco, ele já sabe quais imagens renderizar (array tipos_navios)
+  def mapShip(i, ship_size)
+    # verifica se o quadrado clicado e seus sucessores podem abrigar o barco
+    if shipFits?(i, ship_size)
+      # renderização das imagens nos quadradinhos
+      # o 'j' serve para gerenciar qual parte do barco (imagem) será renderizada naquele determinado quadrado
+      for j in 1..ship_size
+        @player1Navios[i] = Image.new(
+          "images/#{@@tipos_navios[ship_size]}_#{j}.png",
+          x: @player1[i].x,
+          y: @player1[i].y,
+          width: 45, height: 45,
+          opacity: 100,
+        )
+
+        @player1[i].color = "#87CEEB" # teste apenas; p/ destacar as casas escolhidas até o momento
+        i = i + 1 # passa para o próximo quadradinho
+      end
+    end
   end
 
   def hideShips
