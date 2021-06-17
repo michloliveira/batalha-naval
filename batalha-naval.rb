@@ -1,7 +1,7 @@
 require "ruby2d"
 require_relative "./grid.rb"
 
-set background: "navy"
+set background: Image.new("./images/fundo.png")
 set width: 1155, height: 600
 
 tabuleiro = Grid.new
