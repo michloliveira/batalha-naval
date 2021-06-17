@@ -11,7 +11,7 @@ on :mouse_down do |event|
   square = tabuleiro.contains(event.x, event.y) #verifica se eu cliquei em um quadrado
   if square # só irá executar se eu estou clicando em um quadrado
     if !pressed
-        tabuleiro.mapShip(tabuleiro.getPosition(event.x, event.y))
+      tabuleiro.mapShip(tabuleiro.getPosition(event.x, event.y), 6) # o segundo parâmetro é o tamanho do barco: adicionar verificação se o tamanho existe p/ não dar erro
     else
       if tabuleiro.containsShip?(tabuleiro.getPosition(event.x, event.y))
         # juntar essas duas funções em uma só: jogada certa
