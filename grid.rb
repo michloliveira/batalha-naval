@@ -19,7 +19,7 @@ class Grid
                   [0, 450], [50, 450], [100, 450], [150, 450], [200, 450], [250, 450], [300, 450], [350, 450], [400, 450], [450, 450]]
 
     @positions.each do |position| #preenchendo a player1 com com os quadrados (objetos)
-      @player1.push(Square.new(x: position[0], y: position[1], z: 0, size: 45, color: "blue"))
+      @player1.push(Square.new(x: position[0], y: position[1], z: 0, size: 49, color: "blue"))
     end
 
     @message = Text.new("ESCOLHA AS POSIÇÕES PARA OS BARCOS", size: 25, x: 520)
@@ -31,12 +31,13 @@ class Grid
     @player1.each do |player1|
       if player1.contains?(x, y)
         player1.color = "red"
-        player1.z = -5
+        return true
       end
     end
+    return false
   end
 
-  def getPosition(x, y) # função que retorna a posição do quadrado clicado no array de quadrados
+  def getPosition(x, y) # função que retorna a o indice do quadrado clicado no array de quadrados
     @player1.each do |player1|
       if player1.contains?(x, y)
         return @player1.find_index(player1)
