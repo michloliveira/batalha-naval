@@ -5,7 +5,6 @@ class Grid
 
   def initialize
     @player1 = [] #array de objetos - quadrados
-    @computer = []
     @player1Navios = [] #array onde estará mapeado os navios
     @@tipos_navios = { 1 => "submarino", 3 => "navio_encouracado", 4 => "navio_de_guerra", 6 => "porta_avioes" }
     #Tabela de posicoes dos quadrados do tabuleiro, cada quadrado possui 50x50 ------------
