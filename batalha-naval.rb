@@ -24,11 +24,12 @@ on :mouse_down do |event|
     else
       if tabuleiro.containsShip?(tabuleiro.getPosition(event.x, event.y))
         # juntar essas duas funções em uma só: jogada certa
-        tabuleiro.contains(event.x, event.y)
+        #tabuleiro.contains(event.x, event.y)
         tabuleiro.revealShip(tabuleiro.getPosition(event.x, event.y))
         #verificar se alguém ganhou
       else
-        tabuleiro.contains(event.x, event.y) #tem que substituir por uma função de colorir
+        tabuleiro.naoExisteBarco(tabuleiro.getPosition(event.x, event.y))
+        #tabuleiro.contains(event.x, event.y) #tem que substituir por uma função de colorir
         #se não contem barco , pinta de vermelho e passa a vez para o outro
       end
     end
