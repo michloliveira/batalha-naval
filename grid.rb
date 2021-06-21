@@ -1,7 +1,7 @@
 require "ruby2d"
 
 class Grid
-  attr_accessor :message, :message2
+  attr_accessor :message, :message2, :messageOrientacaoNavio, :messageMudarOrientacao
 
   def initialize
     @player1 = [] #array de objetos - quadrados
@@ -28,6 +28,9 @@ class Grid
     @coordenadas = Text.new(" A    B    C    D    E    F    G    H    I     J", size: 25, x: 25, y: 70)
     @message = Text.new("ESCOLHA AS POSIÇÕES PARA OS BARCOS", size: 25, x: 520)
     @message2 = Text.new("Pressione qualquer tecla quando terminar de escolher as casas", size: 20, x: 520, y: 50)
+    @messageOrientacaoNavio = Text.new("O barco será inserido na Horizontal", size: 20, x: 640, y: 120)
+    @messageMudarOrientacao = Text.new("Clique em Espaço para mudar a orientação", size: 20, x: 615, y: 150)
+
   end
 
   def contains(x, y) #funcão que verifica se o click pertence a algum quadrado

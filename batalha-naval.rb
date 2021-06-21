@@ -4,10 +4,12 @@ require_relative "./grid.rb"
 set background: Image.new("./images/fundo.png")
 set width: 1155, height: 600
 
+orientacaoNavio = true #true significa que o jogador quer colocar o navio na Horizontal
 tabuleiro = Grid.new
 start = false # var. para saber se alguma tecla já foi pressionada
 navios = [6, 4, 3, 3, 1]
 i = 0
+
 on :mouse_down do |event|
   square = tabuleiro.contains(event.x, event.y) #verifica se eu cliquei em um quadrado
   if square # só irá executar se eu estou clicando em um quadrado
@@ -19,6 +21,8 @@ on :mouse_down do |event|
         start = true
         tabuleiro.message.text = "ACHE OS BARCOS"
         tabuleiro.message2.remove
+        tabuleiro.messageOrientacaoNavio.remove
+        tabuleiro.messageMudarOrientacao.remove
         tabuleiro.hideShips
       end
     else
@@ -36,12 +40,18 @@ on :mouse_down do |event|
   end
 end
 
-# parte de teste: quando apertar alguma tecla, começa a parte de adivinhar as posições
-# on :key_down do |event|
-#  pressed = true
-#  tabuleiro.message.text = "ACHE OS BARCOS"
-#  tabuleiro.message2.remove
-#  tabuleiro.hideShips
-#end
+# parte para quando o jogador clicar em Espaço, ele inserir o navio na Vertical e vice-versa
+ on :key_down do |event|
+   if event.key == 'space' && orientacaoNavio == true
+     orientacaoNavio = false
+     tabuleiro.messageOrientacaoNavio.text = "O barco será inserido na Vertical"
+   else
+     orientacaoNavio = true
+     tabuleiro.messageOrientacaoNavio.text = "O barco será inserido na Horizontal"
+
+   end
+
+
+end
 
 show
