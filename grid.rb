@@ -86,7 +86,7 @@ class Grid
           "images/#{@@tipos_navios[ship_size]}_#{j}.png",
           x: @player1[i].x,
           y: @player1[i].y,
-          width: 45, height: 45,
+          width: 49, height: 49,
           opacity: 100,
         )
 
@@ -110,6 +110,26 @@ class Grid
   end
 
   def revealShip(i)
+    boom = Sprite.new(
+      './images/boom.png',
+      clip_width: 127,
+      time: 75,
+      width: 49,
+      height: 49,
+      x: @player1[i].x,
+      y: @player1[i].y
+    )
+    boom.play
+    bomb = Sound.new('./audio/bomba.wav') # som de bomba quando acerta um barco
+    bomb.play
+    @player1[i].color = "white"
     @player1Navios[i].opacity = 100
   end
+
+  def naoExisteBarco(i) # pintar o quadrado de vermelho e som de agua
+    @player1[i].color = "red"
+    agua = Sound.new('./audio/boom_water.wav')
+    agua.play
+  end
 end
+
