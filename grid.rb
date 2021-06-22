@@ -23,14 +23,12 @@ class Grid
       @player1.push(Square.new(x: position[0], y: position[1], z: 0, size: 49, color: "#0F6A90"))
     end
 
-    
     @iconUser = Image.new("./images/USERW.png", width: 60, height: 60, x: 250, y: 0)
     @coordenadas = Text.new(" A    B    C    D    E    F    G    H    I     J", size: 25, x: 25, y: 70)
     @message = Text.new("ESCOLHA AS POSIÇÕES PARA OS BARCOS", size: 25, x: 520)
     @message2 = Text.new("Pressione qualquer tecla quando terminar de escolher as casas", size: 20, x: 520, y: 50)
     @messageOrientacaoNavio = Text.new("O barco será inserido na Horizontal", size: 20, x: 640, y: 120)
     @messageMudarOrientacao = Text.new("Clique em Espaço para mudar a orientação", size: 20, x: 615, y: 150)
-
   end
 
   def contains(x, y) #funcão que verifica se o click pertence a algum quadrado
@@ -54,34 +52,38 @@ class Grid
 
   # mudar o nome dessas funções
 
-  def shipFits?(i, ship_size)
+  def shipFits?(i, ship_size, orientacao)
     #compara o primeiro algarismo da posição onde começa o barco com o primeiro algarismo da posição onde ele termina.
     #se o segundo desses for maiosr, o barco termina em outra linha.
     # possui um caso especial para a primeira linha: se o fim do barco ficar em uma posição maior que 9, já vai estar em outra linha
     # verifica também se o fim do barco ultrapassaria a última posição
-    fits_line_size = !(((0..9) === i && i + (ship_size - 1) > 9) ||
-                       (!((0..9) === i) && (i + (ship_size - 1)).to_s[0].to_i > (i).to_s[0].to_i) ||
-                       i + (ship_size - 1) > 99)
+    fits_line_size_horizontal = !(((0..9) === i && i + (ship_size - 1) > 9) ||
+                                  (!((0..9) === i) && (i + (ship_size - 1)).to_s[0].to_i > (i).to_s[0].to_i) ||
+                                  i + (ship_size - 1) > 99)
 
-    is_range_free = true
+    # verifica se o barco cabe na linha vertical proposta
+    fits_line_vertical = i + ((ship_size - 1) * 10) <= 99
 
-    # verifica se todos os quadrados, do começo ao fim do barco, estão desocupados
-    for j in i..i + ship_size - 1
-      if containsShip?(j)
-        is_range_free = false
+    is_range_free_horizontal = true
+    is_range_free_vertical = true
+
+    for j in 1..ship_size
+      if containsShip?(i)
+        orientacao ? is_range_free_horizontal = false : is_range_free_vertical = false
         break
       end
+      orientacao ? i = i + 1 : i = i + 10
     end
 
-    # se ambas as condições forem atendidas, o quadradinho escolhido pode abrigar o barco
-    fits_line_size && is_range_free
+    # dependendo da orientacao, se ambas as condições forem atendidas, o quadradinho escolhido pode abrigar o barco
+    orientacao ? (fits_line_size_horizontal && is_range_free_horizontal) : (fits_line_vertical && is_range_free_vertical)
   end
 
   # recebe a posição que se pretende colocar o barco e o tamanho do barco
   # com base no tamanho do barco, ele já sabe quais imagens renderizar (array tipos_navios)
-  def mapShip(i, ship_size)
+  def mapShip(i, ship_size, orientacao)
     # verifica se o quadrado clicado e seus sucessores podem abrigar o barco
-    if shipFits?(i, ship_size)
+    if shipFits?(i, ship_size, orientacao)
       # renderização das imagens nos quadradinhos
       # o 'j' serve para gerenciar qual parte do barco (imagem) será renderizada naquele determinado quadrado
       for j in 1..ship_size
@@ -93,8 +95,9 @@ class Grid
           opacity: 100,
         )
 
+        orientacao ? @player1Navios[i].rotate = 0 : @player1Navios[i].rotate = 90
         @player1[i].color = "#87CEEB" # teste apenas; p/ destacar as casas escolhidas até o momento
-        i = i + 1 # passa para o próximo quadradinho
+        orientacao ? i = i + 1 : i = i + 10
       end
     end
   end
@@ -114,16 +117,16 @@ class Grid
 
   def revealShip(i)
     boom = Sprite.new(
-      './images/boom.png',
+      "./images/boom.png",
       clip_width: 127,
       time: 75,
       width: 49,
       height: 49,
       x: @player1[i].x,
-      y: @player1[i].y
+      y: @player1[i].y,
     )
     boom.play
-    bomb = Sound.new('./audio/bomba.wav') # som de bomba quando acerta um barco
+    bomb = Sound.new("./audio/bomba.wav") # som de bomba quando acerta um barco
     bomb.play
     @player1[i].color = "white"
     @player1Navios[i].opacity = 100
@@ -131,8 +134,19 @@ class Grid
 
   def naoExisteBarco(i) # pintar o quadrado de vermelho e som de agua
     @player1[i].color = "red"
-    agua = Sound.new('./audio/boom_water.wav')
+    agua = Sound.new("./audio/boom_water.wav")
     agua.play
   end
-end
 
+  def won?
+    won = true
+    @player1.each do |player1|
+      # se uma posição contem um barco mas esse barco ainda tem opacidade 0, essa parte do barco ainda não foi encontrada
+      # e, assim, o jogador não ganhou
+      if containsShip?(@player1.find_index(player1)) && @player1Navios[@player1.find_index(player1)].opacity == 0
+        won = false
+      end
+    end
+    won
+  end
+end

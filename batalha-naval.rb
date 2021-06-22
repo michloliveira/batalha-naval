@@ -15,7 +15,7 @@ on :mouse_down do |event|
   if square # só irá executar se eu estou clicando em um quadrado
     if !start
       if i <= 4
-        i = i + 1 if tabuleiro.mapShip(tabuleiro.getPosition(event.x, event.y), navios[i]) # o segundo parâmetro é o tamanho do barco: adicionar verificação se o tamanho existe p/ não dar erro
+        i = i + 1 if tabuleiro.mapShip(tabuleiro.getPosition(event.x, event.y), navios[i], orientacaoNavio) # o segundo parâmetro é o tamanho do barco: adicionar verificação se o tamanho existe p/ não dar erro
         tabuleiro.message.text = "Click para iniciar o jogo" if i == 5
       else
         start = true
@@ -31,6 +31,9 @@ on :mouse_down do |event|
         #tabuleiro.contains(event.x, event.y)
         tabuleiro.revealShip(tabuleiro.getPosition(event.x, event.y))
         #verificar se alguém ganhou
+        if tabuleiro.won?
+          tabuleiro.message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
+        end
       else
         tabuleiro.naoExisteBarco(tabuleiro.getPosition(event.x, event.y))
         #tabuleiro.contains(event.x, event.y) #tem que substituir por uma função de colorir
@@ -41,17 +44,14 @@ on :mouse_down do |event|
 end
 
 # parte para quando o jogador clicar em Espaço, ele inserir o navio na Vertical e vice-versa
- on :key_down do |event|
-   if event.key == 'space' && orientacaoNavio == true
-     orientacaoNavio = false
-     tabuleiro.messageOrientacaoNavio.text = "O barco será inserido na Vertical"
-   else
-     orientacaoNavio = true
-     tabuleiro.messageOrientacaoNavio.text = "O barco será inserido na Horizontal"
-
-   end
-
-
+on :key_down do |event|
+  if event.key == "space" && orientacaoNavio == true
+    orientacaoNavio = false
+    tabuleiro.messageOrientacaoNavio.text = "O barco será inserido na Vertical"
+  else
+    orientacaoNavio = true
+    tabuleiro.messageOrientacaoNavio.text = "O barco será inserido na Horizontal"
+  end
 end
 
 show
