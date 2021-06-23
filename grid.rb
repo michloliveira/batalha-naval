@@ -2,7 +2,7 @@ require "ruby2d"
 
 class Grid
   attr_accessor :message, :message2, :messageOrientacaoNavio, :messageMudarOrientacao
-
+  
   def initialize
     @player1 = [] #array de objetos - quadrados
     @player1Navios = [] #array onde estará mapeado os navios
@@ -34,7 +34,7 @@ class Grid
     # p @player1
     @player1.each do |player1|
       if player1.contains?(x, y)
-        player1.color = "red"
+        #player1.color = "red"
         return true
       end
     end
