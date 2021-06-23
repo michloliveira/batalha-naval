@@ -1,5 +1,6 @@
 require "ruby2d"
 require_relative "./grid.rb"
+require_relative "./computador.rb"
 
 set background: Image.new("./images/fundo.png")
 set width: 1155, height: 600
@@ -13,6 +14,8 @@ i = 0
 previsualizacao = Image.new("./images/porta_avioes.png", width: 300, x: 600, y: 300, rotate: 0)
 
 on :mouse_down do |event|
+  puts event.x,event.y
+  puts "\n"
   square = tabuleiro.contains(event.x, event.y) #verifica se eu cliquei em um quadrado
   if square # só irá executar se eu estou clicando em um quadrado
     if !start
@@ -26,6 +29,13 @@ on :mouse_down do |event|
           tabuleiro.message.text = "Click para iniciar o jogo" and tabuleiro.messageOrientacaoNavio.remove and tabuleiro.messageMudarOrientacao.remove if i == 5 #apagando as mensagens sobre a orietação do navio
         end
       else
+        computador = Computador.new  #cria um novo tabuleiro para computador
+        #precisa criar uma função random para gerar os x e y abaixo
+        computador.mapShip(computador.getPosition(644, 123),6, 0)
+        computador.mapShip(computador.getPosition(644, 177),4, 0)
+        computador.mapShip(computador.getPosition(644, 228),3, 0)
+        computador.mapShip(computador.getPosition(644, 278),3, 0)
+        computador.mapShip(computador.getPosition(644, 327),1, 0)
         start = true
         tabuleiro.message.text = "ACHE OS BARCOS"
         tabuleiro.esconderNavios
