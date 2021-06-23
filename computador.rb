@@ -40,7 +40,7 @@ class Computador
   def getPosition(x, y) # função que retorna a o indice do quadrado clicado no array de quadrados
     @computer.each do |computer|
       if computer.contains?(x, y)
-        p @computer.find_index(computer)
+        #p @computer.find_index(computer)
         return @computer.find_index(computer)
       end
     end
@@ -95,6 +95,9 @@ class Computador
         @computer[i].color = "#87CEEB" # teste apenas; p/ destacar as casas escolhidas até o momento
         orientacao == 0 ? i = i + 1 : i = i + 10
       end
+      return true
+    else
+      return false
     end
   end
 

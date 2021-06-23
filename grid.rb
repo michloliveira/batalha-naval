@@ -2,7 +2,7 @@ require "ruby2d"
 
 class Grid
   attr_accessor :message, :message2, :messageOrientacaoNavio, :messageMudarOrientacao
-  
+
   def initialize
     @player1 = [] #array de objetos - quadrados
     @player1Navios = [] #array onde estará mapeado os navios
@@ -41,7 +41,7 @@ class Grid
     return false
   end
 
-  def getPosition(x, y) # função que retorna a o indice do quadrado clicado no array de quadrados
+  def getPosicao(x, y) # função que retorna a o indice do quadrado clicado no array de quadrados
     @player1.each do |player1|
       if player1.contains?(x, y)
         return @player1.find_index(player1)
@@ -51,43 +51,43 @@ class Grid
 
   # mudar o nome dessas funções
 
-  def shipFits?(i, ship_size, orientacao)
+  def navioEncaixa?(i, tamanho_navio, orientacao)
     #compara o primeiro algarismo da posição onde começa o barco com o primeiro algarismo da posição onde ele termina.
     #se o segundo desses for maiosr, o barco termina em outra linha.
     # possui um caso especial para a primeira linha: se o fim do barco ficar em uma posição maior que 9, já vai estar em outra linha
     # verifica também se o fim do barco ultrapassaria a última posição
-    fits_line_size_horizontal = !(((0..9) === i && i + (ship_size - 1) > 9) ||
-                                  (!((0..9) === i) && (i + (ship_size - 1)).to_s[0].to_i > (i).to_s[0].to_i) ||
-                                  i + (ship_size - 1) > 99)
+    cabe_linha_horizontal = !(((0..9) === i && i + (tamanho_navio - 1) > 9) ||
+                              (!((0..9) === i) && (i + (tamanho_navio - 1)).to_s[0].to_i > (i).to_s[0].to_i) ||
+                              i + (tamanho_navio - 1) > 99)
 
     # verifica se o barco cabe na linha vertical proposta
-    fits_line_vertical = i + ((ship_size - 1) * 10) <= 99
+    cabe_linha_vertical = i + ((tamanho_navio - 1) * 10) <= 99
 
-    is_range_free_horizontal = true
-    is_range_free_vertical = true
+    intervalo_livre_horizontal = true
+    intervalo_livre_vertical = true
 
-    for j in 1..ship_size
-      if containsShip?(i)
-        orientacao == 0 ? is_range_free_horizontal = false : is_range_free_vertical = false
+    for j in 1..tamanho_navio
+      if temNavio?(i)
+        orientacao == 0 ? intervalo_livre_horizontal = false : intervalo_livre_vertical = false
         break
       end
       orientacao == 0 ? i = i + 1 : i = i + 10
     end
 
     # dependendo da orientacao, se ambas as condições forem atendidas, o quadradinho escolhido pode abrigar o barco
-    orientacao == 0 ? (fits_line_size_horizontal && is_range_free_horizontal) : (fits_line_vertical && is_range_free_vertical)
+    orientacao == 0 ? (cabe_linha_horizontal && intervalo_livre_horizontal) : (cabe_linha_vertical && intervalo_livre_vertical)
   end
 
   # recebe a posição que se pretende colocar o barco e o tamanho do barco
   # com base no tamanho do barco, ele já sabe quais imagens renderizar (array tipos_navios)
-  def mapShip(i, ship_size, orientacao)
+  def mapearNavio(i, tamanho_navio, orientacao)
     # verifica se o quadrado clicado e seus sucessores podem abrigar o barco
-    if shipFits?(i, ship_size, orientacao)
+    if navioEncaixa?(i, tamanho_navio, orientacao)
       # renderização das imagens nos quadradinhos
       # o 'j' serve para gerenciar qual parte do barco (imagem) será renderizada naquele determinado quadrado
-      for j in 1..ship_size
+      for j in 1..tamanho_navio
         @player1Navios[i] = Image.new(
-          "images/#{@@tipos_navios[ship_size]}_#{j}.png",
+          "images/#{@@tipos_navios[tamanho_navio]}_#{j}.png",
           x: @player1[i].x,
           y: @player1[i].y,
           width: 49, height: 49,
@@ -101,20 +101,20 @@ class Grid
     end
   end
 
-  def hideShips
+  def esconderNavios
     @player1.each do |player1|
       player1.color = "#0F6A90"
-      if containsShip?(@player1.find_index(player1))
+      if temNavio?(@player1.find_index(player1))
         @player1Navios[@player1.find_index(player1)].opacity = 0
       end
     end
   end
 
-  def containsShip?(i)
+  def temNavio?(i)
     !@player1Navios[i].nil?
   end
 
-  def revealShip(i)
+  def revelarNavio(i)
     boom = Sprite.new(
       "./images/boom.png",
       clip_width: 127,
@@ -137,12 +137,12 @@ class Grid
     agua.play
   end
 
-  def won?
+  def ganhou?
     won = true
     @player1.each do |player1|
       # se uma posição contem um barco mas esse barco ainda tem opacidade 0, essa parte do barco ainda não foi encontrada
       # e, assim, o jogador não ganhou
-      if containsShip?(@player1.find_index(player1)) && @player1Navios[@player1.find_index(player1)].opacity == 0
+      if temNavio?(@player1.find_index(player1)) && @player1Navios[@player1.find_index(player1)].opacity == 0
         won = false
       end
     end
