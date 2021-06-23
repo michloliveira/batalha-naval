@@ -68,14 +68,14 @@ class Grid
 
     for j in 1..ship_size
       if containsShip?(i)
-        orientacao ? is_range_free_horizontal = false : is_range_free_vertical = false
+        orientacao == 0 ? is_range_free_horizontal = false : is_range_free_vertical = false
         break
       end
-      orientacao ? i = i + 1 : i = i + 10
+      orientacao == 0 ? i = i + 1 : i = i + 10
     end
 
     # dependendo da orientacao, se ambas as condições forem atendidas, o quadradinho escolhido pode abrigar o barco
-    orientacao ? (fits_line_size_horizontal && is_range_free_horizontal) : (fits_line_vertical && is_range_free_vertical)
+    orientacao == 0 ? (fits_line_size_horizontal && is_range_free_horizontal) : (fits_line_vertical && is_range_free_vertical)
   end
 
   # recebe a posição que se pretende colocar o barco e o tamanho do barco
@@ -94,9 +94,9 @@ class Grid
           opacity: 100,
         )
 
-        orientacao ? @player1Navios[i].rotate = 0 : @player1Navios[i].rotate = 90
+        orientacao == 0 ? @player1Navios[i].rotate = 0 : @player1Navios[i].rotate = 90
         @player1[i].color = "#87CEEB" # teste apenas; p/ destacar as casas escolhidas até o momento
-        orientacao ? i = i + 1 : i = i + 10
+        orientacao == 0 ? i = i + 1 : i = i + 10
       end
     end
   end
