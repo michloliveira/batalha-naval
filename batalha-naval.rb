@@ -3,6 +3,7 @@ require_relative "./grid.rb"
 
 set background: Image.new("./images/fundo.png")
 set width: 1155, height: 600
+set title: 'BATALHA NAVAL'
 
 orientacaoNavio = 0 #true significa que o jogador quer colocar o navio na Horizontal
 tabuleiro = Grid.new
