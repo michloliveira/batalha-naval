@@ -22,7 +22,8 @@ end
 on :mouse_down do |event|
   #puts event.x, event.y
   #puts "\n"
-  square = tabuleiro.contains(event.x, event.y) #verifica se eu cliquei em um quadrado
+  start == true ? square = @computador.contains(event.x, event.y) : square = tabuleiro.contains(event.x, event.y)
+  #square = tabuleiro.contains(event.x, event.y) #verifica se eu cliquei em um quadrado
   if square # só irá executar se eu estou clicando em um quadrado
     if !start
       if i <= 4
@@ -35,33 +36,41 @@ on :mouse_down do |event|
           tabuleiro.message.text = "Click para iniciar o jogo" and tabuleiro.messageOrientacaoNavio.remove and tabuleiro.messageMudarOrientacao.remove if i == 5 #apagando as mensagens sobre a orietação do navio
         end
       else
-        computador = Computador.new  #cria um novo tabuleiro para computador
+        @computador = Computador.new  #cria um novo tabuleiro para computador
 
         navios.each do |navio|
           loop do
             mapeamento = mapeamento_aleatorio((620..1120), (100..600))
-            i = computador.getPosition(mapeamento[0], mapeamento[1])
-            break if computador.mapShip(i, navio, mapeamento[2])
+            i = @computador.getPosicao(mapeamento[0], mapeamento[1])
+            break if @computador.mapearNavio(i, navio, mapeamento[2])
           end
         end
 
         start = true
         tabuleiro.message.text = "ACHE OS BARCOS"
         tabuleiro.esconderNavios
+        @computador.esconderNavios
       end
-    else
-      if tabuleiro.temNavio?(tabuleiro.getPosicao(event.x, event.y))
-        # juntar essas duas funções em uma só: jogada certa
-        #tabuleiro.contains(event.x, event.y)
-        tabuleiro.revelarNavio(tabuleiro.getPosicao(event.x, event.y))
+    else #o jogo iniciou
+      if @computador.temNavio?(@computador.getPosicao(event.x, event.y))
+        @computador.revelarNavio(@computador.getPosicao(event.x, event.y))
         #verificar se alguém ganhou
-        if tabuleiro.ganhou?
+        if @computador.ganhou?
           tabuleiro.message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
         end
       else
-        tabuleiro.naoExisteNavio(tabuleiro.getPosicao(event.x, event.y))
-        #tabuleiro.contains(event.x, event.y) #tem que substituir por uma função de colorir
-        #se não contem barco , pinta de vermelho e passa a vez para o outro
+        @computador.naoExisteNavio(@computador.getPosicao(event.x, event.y)) #pinta de vermelho 
+        #vez do computador
+        mapeamento = mapeamento_aleatorio((20..470), (100..600))# tem que descobrir o intervalo do jogador
+        if tabuleiro.temNavio?(tabuleiro.getPosicao(mapeamento[0],mapeamento[1]))
+          tabuleiro.revelarNavio(tabuleiro.getPosicao(mapeamento[0],mapeamento[1]))
+          if tabuleiro.ganhou?
+            tabuleiro.message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
+          end
+        else
+          tabuleiro.naoExisteNavio(tabuleiro.getPosicao(mapeamento[0],mapeamento[1])) #pinta de vermelho 
+        end
+
       end
     end
   end

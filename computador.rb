@@ -37,7 +37,7 @@ class Computador
     return false
   end
 
-  def getPosition(x, y) # função que retorna a o indice do quadrado clicado no array de quadrados
+  def getPosicao(x, y) # função que retorna a o indice do quadrado clicado no array de quadrados
     @computer.each do |computer|
       if computer.contains?(x, y)
         #p @computer.find_index(computer)
@@ -48,7 +48,7 @@ class Computador
 
   # mudar o nome dessas funções
 
-  def shipFits?(i, ship_size, orientacao)
+  def navioEncaixa?(i, ship_size, orientacao)
     #compara o primeiro algarismo da posição onde começa o barco com o primeiro algarismo da posição onde ele termina.
     #se o segundo desses for maiosr, o barco termina em outra linha.
     # possui um caso especial para a primeira linha: se o fim do barco ficar em uma posição maior que 9, já vai estar em outra linha
@@ -64,7 +64,7 @@ class Computador
     is_range_free_vertical = true
 
     for j in 1..ship_size
-      if containsShip?(i)
+      if temNavio?(i)
         orientacao == 0 ? is_range_free_horizontal = false : is_range_free_vertical = false
         break
       end
@@ -77,9 +77,9 @@ class Computador
 
   # recebe a posição que se pretende colocar o barco e o tamanho do barco
   # com base no tamanho do barco, ele já sabe quais imagens renderizar (array tipos_navios)
-  def mapShip(i, ship_size, orientacao)
+  def mapearNavio(i, ship_size, orientacao)
     # verifica se o quadrado clicado e seus sucessores podem abrigar o barco
-    if shipFits?(i, ship_size, orientacao)
+    if navioEncaixa?(i, ship_size, orientacao)
       # renderização das imagens nos quadradinhos
       # o 'j' serve para gerenciar qual parte do barco (imagem) será renderizada naquele determinado quadrado
       for j in 1..ship_size
@@ -92,7 +92,6 @@ class Computador
         )
 
         orientacao == 0 ? @computerNavios[i].rotate = 0 : @computerNavios[i].rotate = 90
-        @computer[i].color = "#87CEEB" # teste apenas; p/ destacar as casas escolhidas até o momento
         orientacao == 0 ? i = i + 1 : i = i + 10
       end
       return true
@@ -101,20 +100,20 @@ class Computador
     end
   end
 
-  def hideShips
+  def esconderNavios
     @computer.each do |computer|
       computer.color = "#0F6A90"
-      if containsShip?(@computer.find_index(computer))
+      if temNavio?(@computer.find_index(computer))
         @computerNavios[@computer.find_index(computer)].opacity = 0
       end
     end
   end
 
-  def containsShip?(i)
+  def temNavio?(i)
     !@computerNavios[i].nil?
   end
 
-  def revealShip(i)
+  def revelarNavio(i)
     boom = Sprite.new(
       "./images/boom.png",
       clip_width: 127,
@@ -137,12 +136,12 @@ class Computador
     agua.play
   end
 
-  def won?
+  def ganhou?
     won = true
     @computer.each do |computer|
       # se uma posição contem um barco mas esse barco ainda tem opacidade 0, essa parte do barco ainda não foi encontrada
       # e, assim, o jogador não ganhou
-      if containsShip?(@computer.find_index(computer)) && @computerNavios[@computer.find_index(computer)].opacity == 0
+      if temNavio?(@computer.find_index(computer)) && @computerNavios[@computer.find_index(computer)].opacity == 0
         won = false
       end
     end
