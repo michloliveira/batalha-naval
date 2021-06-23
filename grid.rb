@@ -26,7 +26,6 @@ class Grid
     @iconUser = Image.new("./images/USERW.png", width: 60, height: 60, x: 250, y: 0)
     @coordenadas = Text.new(" A    B    C    D    E    F    G    H    I     J", size: 25, x: 25, y: 70)
     @message = Text.new("ESCOLHA AS POSIÇÕES PARA OS BARCOS", size: 25, x: 520)
-    @message2 = Text.new("Pressione qualquer tecla quando terminar de escolher as casas", size: 20, x: 520, y: 50)
     @messageOrientacaoNavio = Text.new("O barco será inserido na Horizontal", size: 20, x: 640, y: 120)
     @messageMudarOrientacao = Text.new("Clique em Espaço para mudar a orientação", size: 20, x: 615, y: 150)
   end
@@ -132,7 +131,7 @@ class Grid
     @player1Navios[i].opacity = 100
   end
 
-  def naoExisteBarco(i) # pintar o quadrado de vermelho e som de agua
+  def naoExisteNavio(i) # pintar o quadrado de vermelho e som de agua
     @player1[i].color = "red"
     agua = Sound.new("./audio/boom_water.wav")
     agua.play
