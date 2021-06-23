@@ -13,9 +13,15 @@ navios = [6, 4, 3, 3, 1]
 i = 0
 previsualizacao = Image.new("./images/porta_avioes.png", width: 300, x: 600, y: 300, rotate: 0)
 
+def mapeamento_aleatorio(intervalo_x, intervalo_y)
+  # retorna um valor aleatório para x e y, dados seus intervalos
+  # retorna também uma orientação, 0 ou 90
+  [rand(intervalo_x), rand(intervalo_y), [0, 90].shuffle.first]
+end
+
 on :mouse_down do |event|
-  puts event.x,event.y
-  puts "\n"
+  #puts event.x, event.y
+  #puts "\n"
   square = tabuleiro.contains(event.x, event.y) #verifica se eu cliquei em um quadrado
   if square # só irá executar se eu estou clicando em um quadrado
     if !start
@@ -30,12 +36,15 @@ on :mouse_down do |event|
         end
       else
         computador = Computador.new  #cria um novo tabuleiro para computador
-        #precisa criar uma função random para gerar os x e y abaixo
-        computador.mapShip(computador.getPosition(644, 123),6, 0)
-        computador.mapShip(computador.getPosition(644, 177),4, 0)
-        computador.mapShip(computador.getPosition(644, 228),3, 0)
-        computador.mapShip(computador.getPosition(644, 278),3, 0)
-        computador.mapShip(computador.getPosition(644, 327),1, 0)
+
+        navios.each do |navio|
+          loop do
+            mapeamento = mapeamento_aleatorio((620..1120), (100..600))
+            i = computador.getPosition(mapeamento[0], mapeamento[1])
+            break if computador.mapShip(i, navio, mapeamento[2])
+          end
+        end
+
         start = true
         tabuleiro.message.text = "ACHE OS BARCOS"
         tabuleiro.esconderNavios
