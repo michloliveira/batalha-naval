@@ -61,10 +61,9 @@ on :mouse_down do |event|
           @tabuleiro.message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
         end
       else
-        @computador.naoExisteNavio(@computador.getPosicao(event.x, event.y)) #pinta de vermelho 
+        @computador.naoExisteNavio(@computador.getPosicao(event.x, event.y)) #pinta de vermelho
         #vez do computador
         @vezDoComputador = true
-
       end
     end
   end
@@ -87,14 +86,22 @@ clock = 1
 update do
   if @vezDoComputador
     if clock % 120 == 0 # espera 2 segundos antes de jogar
-      mapeamento = mapeamento_aleatorio((20..470), (100..600))
-      if @tabuleiro.temNavio?(@tabuleiro.getPosicao(mapeamento[0],mapeamento[1]))
-        @tabuleiro.revelarNavio(@tabuleiro.getPosicao(mapeamento[0],mapeamento[1]))
+      mapeamento = 0 # apenas para definir a variável, porque não daria pra acessar depois se a definição ficasse apenas no loop
+      #vai entrar nesse loop enquanto não sair uma posição que ainda não foi jogada
+      loop do
+        mapeamento = mapeamento_aleatorio((20..520), (100..600)) # intervalo do jogador já definido
+        break if !@computador.posicaoJaJogada?(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1]))
+      end
+      @computador.definirPosicaoComoJogada(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1])) # adiciona a posição jogada no array de posições jogadas
+      # print @computador.jogadas
+
+      if @tabuleiro.temNavio?(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1]))
+        @tabuleiro.revelarNavio(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1]))
         if @tabuleiro.ganhou?
           @tabuleiro.message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
         end
       else
-        @tabuleiro.naoExisteNavio(@tabuleiro.getPosicao(mapeamento[0],mapeamento[1])) #pinta de vermelho
+        @tabuleiro.naoExisteNavio(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1])) #pinta de vermelho
         @vezDoComputador = false
       end
     end

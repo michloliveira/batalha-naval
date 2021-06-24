@@ -1,12 +1,13 @@
 require "ruby2d"
 
 class Computador
-  attr_accessor :message, :message2, :messageOrientacaoNavio, :messageMudarOrientacao
+  attr_accessor :message, :message2, :messageOrientacaoNavio, :messageMudarOrientacao, :jogadas
 
   def initialize
     @computer = [] #array de objetos - quadrados
     @computerNavios = [] #array onde estará mapeado os navios
     @@tipos_navios = { 1 => "submarino", 3 => "navio_encouracado", 4 => "navio_de_guerra", 6 => "porta_avioes" }
+    @jogadas = [] # armazena quais posições já foram jogadas
     #Tabela de posicoes dos quadrados do tabuleiro, cada quadrado possui 50x50 ------------
     @positions = [[20, 100], [70, 100], [120, 100], [170, 100], [220, 100], [270, 100], [320, 100], [370, 100], [420, 100], [470, 100],
                   [20, 150], [70, 150], [120, 150], [170, 150], [220, 150], [270, 150], [320, 150], [370, 150], [420, 150], [470, 150],
@@ -44,6 +45,14 @@ class Computador
         return @computer.find_index(computer)
       end
     end
+  end
+
+  def posicaoJaJogada?(i) # verifica se uma posição está contida dentro do array de posições já jogadas
+    @jogadas.include?(i)
+  end
+
+  def definirPosicaoComoJogada(i)
+    @jogadas << i
   end
 
   # mudar o nome dessas funções
