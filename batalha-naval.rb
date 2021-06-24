@@ -42,7 +42,7 @@ on :mouse_down do |event|
 
         navios.each do |navio|
           loop do
-            mapeamento = mapeamento_aleatorio((620..1120), (100..600))
+            mapeamento = mapeamento_aleatorio((621..1119), (101..599))
             i = @computador.getPosicao(mapeamento[0], mapeamento[1])
             break if @computador.mapearNavio(i, navio, mapeamento[2])
           end
@@ -89,7 +89,7 @@ update do
       mapeamento = 0 # apenas para definir a variável, porque não daria pra acessar depois se a definição ficasse apenas no loop
       #vai entrar nesse loop enquanto não sair uma posição que ainda não foi jogada
       loop do
-        mapeamento = mapeamento_aleatorio((20..520), (100..600)) # intervalo do jogador já definido
+        mapeamento = mapeamento_aleatorio((21..519), (101..599)) # intervalo do jogador já definido
         break if !@computador.posicaoJaJogada?(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1]))
       end
       @computador.definirPosicaoComoJogada(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1])) # adiciona a posição jogada no array de posições jogadas
