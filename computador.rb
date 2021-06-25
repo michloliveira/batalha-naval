@@ -27,12 +27,14 @@ class Computador
     @coordenadas = Text.new(" A    B    C    D    E    F    G    H    I     J", size: 25, x: 625, y: 70)
   end
 
-  def contains(x, y) #funcão que verifica se o click pertence a algum quadrado
+  def contains(x, y, vezComputador) #funcão que verifica se o click pertence a algum quadrado
     # p @computer
-    @computer.each do |computer|
-      if computer.contains?(x, y)
-        computer.color = "red"
-        return true
+    if !vezComputador
+      @computer.each do |computer|
+        if computer.contains?(x, y)
+         computer.color = "red"
+         return true
+        end
       end
     end
     return false

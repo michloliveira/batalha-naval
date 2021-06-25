@@ -26,9 +26,9 @@ on :mouse_down do |event|
   #puts event.x, event.y
   #puts "\n"
   p @vezDoComputador
-  start == true ? square = @computador.contains(event.x, event.y) : square = @tabuleiro.contains(event.x, event.y)
+  start == true ? square = @computador.contains(event.x, event.y, @vezDoComputador) : square = @tabuleiro.contains(event.x, event.y)
 
-  if square && !@vezDoComputador # só irá executar se eu estou clicando em um quadrado e se não for a vez do computador
+  if square && @vezDoComputador == false # só irá executar se eu estou clicando em um quadrado e se não for a vez do computador
     if !start
       if i <= 4
         if @tabuleiro.mapearNavio(@tabuleiro.getPosicao(event.x, event.y), navios[i], orientacaoNavio) # o segundo parâmetro é o tamanho do barco /// se o barco foi inserido corretamente, entra
