@@ -34,7 +34,6 @@ class Grid
     # p @player1
     @player1.each do |player1|
       if player1.contains?(x, y)
-        #player1.color = "red"
         return true
       end
     end

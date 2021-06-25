@@ -26,7 +26,7 @@ on :mouse_down do |event|
   #puts event.x, event.y
   #puts "\n"
   p @vezDoComputador
-  start == true ? square = @computador.contains(event.x, event.y, @vezDoComputador) : square = @tabuleiro.contains(event.x, event.y)
+  start == true ? square = @computador.contains(event.x, event.y) : square = @tabuleiro.contains(event.x, event.y)
 
   if square && @vezDoComputador == false # só irá executar se eu estou clicando em um quadrado e se não for a vez do computador
     if !start
