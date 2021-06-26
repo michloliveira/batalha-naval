@@ -37,7 +37,7 @@ on :mouse_down do |event|
           previsualizacao = Image.new("./images/navio_de_guerra.png", width: 200, x: 650, y: 300, rotate: orientacaoNavio) if i == 1 #se o indice for 1, mostro o navio de guerra
           previsualizacao = Image.new("./images/navio_encouracado.png", width: 150, x: 700, y: 300, rotate: orientacaoNavio) if i == 2 or i == 3 #se o indice for 2 ou 3, mostro o navio encouraçado
           previsualizacao = Image.new("./images/submarino.png", width: 50, x: 750, y: 300, rotate: orientacaoNavio) if i == 4 # se o indice for 4, mostro o submarino
-          @botao.opacity = 100 and @mensagemInicioJogo = Text.new("Click para iniciar o jogo", x: 90, y: 300, z: 25, size: 30, color: 'white') and @tabuleiro.messageOrientacaoNavio.remove and @tabuleiro.messageMudarOrientacao.remove and @tabuleiro.message.remove if i == 5 #apagando as mensagens sobre a orietação do navio        end
+          @botao.opacity = 100 and @mensagemInicioJogo = Text.new("Click para iniciar o jogo", x: 90, y: 300, z: 25, size: 30, color: "white") and @tabuleiro.messageOrientacaoNavio.remove and @tabuleiro.messageMudarOrientacao.remove and @tabuleiro.message.remove if i == 5 #apagando as mensagens sobre a orietação do navio        end
         end
       else
         @mensagemInicioJogo.remove
@@ -56,20 +56,23 @@ on :mouse_down do |event|
         @tabuleiro.message.text = "ACHE OS BARCOS"
         @tabuleiro.esconderNavios
         @computador.esconderNavios
-        @jogadas = Image.new('./images/play.png', width: 70, height:70, x:535, y:300)
+        @jogadas = Image.new("./images/play.png", width: 70, height: 70, x: 535, y: 300)
       end
     else #o jogo iniciou
-      if @computador.temNavio?(@computador.getPosicao(event.x, event.y))
-        @computador.revelarNavio(@computador.getPosicao(event.x, event.y))
-        #verificar se alguém ganhou
-        if @computador.ganhou?
-          @ganhador.opacity = 100
-          @tabuleiro.message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
+      if !@tabuleiro.posicaoJaJogada?(@computador.getPosicao(event.x, event.y))
+        if @computador.temNavio?(@computador.getPosicao(event.x, event.y))
+          @computador.revelarNavio(@computador.getPosicao(event.x, event.y))
+          #verificar se alguém ganhou
+          if @computador.ganhou?
+            @ganhador.opacity = 100
+            @tabuleiro.message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
+          end
+        else
+          @computador.naoExisteNavio(@computador.getPosicao(event.x, event.y)) #pinta de vermelho
+          #vez do computador
+          @vezDoComputador = true
         end
-      else
-        @computador.naoExisteNavio(@computador.getPosicao(event.x, event.y)) #pinta de vermelho
-        #vez do computador
-        @vezDoComputador = true
+        @tabuleiro.definirPosicaoComoJogada(@computador.getPosicao(event.x, event.y))
       end
     end
   end
@@ -97,7 +100,7 @@ update do
       #vai entrar nesse loop enquanto não sair uma posição que ainda não foi jogada
       loop do
         mapeamento = mapeamento_aleatorio((21..519), (101..599)) # intervalo do jogador já definido
-        break if !@computador.posicaoJaJogada?(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1]))
+        break if !@computador.posicaoJaJogada?(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1])) || !@computador.haPosicoesNaoJogadas()
       end
       @computador.definirPosicaoComoJogada(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1])) # adiciona a posição jogada no array de posições jogadas
       # print @computador.jogadas
