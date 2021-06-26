@@ -13,8 +13,8 @@ start = false # var. para saber se alguma tecla já foi pressionada
 navios = [6, 4, 3, 3, 1]
 i = 0
 previsualizacao = Image.new("./images/porta_avioes.png", width: 300, x: 600, y: 300, rotate: 0)
-@botao = Rectangle.new(x: 80, y: 285, z: 20, width: 400, height: 60, color: "green", opacity: 0)
-@ganhador = Image.new("./images/medal.png", width: 200, height: 200, x: 180, y: 200, opacity: 0)
+@botao = Rectangle.new(x: 80, y: 285, z: 20, width: 400, height: 60, color: 'green', opacity: 0)
+@ganhador = Image.new("./images/medal.png", width: 200, height: 200, x: 180, y: 200, z: 40, opacity: 0)
 
 def mapeamento_aleatorio(intervalo_x, intervalo_y)
   # retorna um valor aleatório para x e y, dados seus intervalos

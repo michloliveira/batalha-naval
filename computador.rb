@@ -24,6 +24,7 @@ class Computador
       @computer.push(Square.new(x: position[0] + 600, y: position[1], z: 0, size: 49, color: "#0F6A90"))
     end
 
+    @iconUser = Image.new("./images/pc.png", width: 60, height: 60, x: 850, y: 0)
     @coordenadas = Text.new(" A    B    C    D    E    F    G    H    I     J", size: 25, x: 625, y: 70)
   end
 
