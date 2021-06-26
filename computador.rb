@@ -31,8 +31,7 @@ class Computador
     # p @computer
     @computer.each do |computer|
       if computer.contains?(x, y)
-        computer.color = "red"
-        return true
+       return true
       end
     end
     return false
