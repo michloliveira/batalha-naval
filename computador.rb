@@ -55,6 +55,10 @@ class Computador
     @jogadas << i
   end
 
+  def haPosicoesNaoJogadas
+    !@jogadas.include?(0..99)
+  end
+
   # mudar o nome dessas funções
 
   def navioEncaixa?(i, ship_size, orientacao)

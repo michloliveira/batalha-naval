@@ -60,7 +60,6 @@ on :mouse_down do |event|
       end
     else #o jogo iniciou
       if !@tabuleiro.posicaoJaJogada?(@computador.getPosicao(event.x, event.y))
-        p "não tinha"
         if @computador.temNavio?(@computador.getPosicao(event.x, event.y))
           @computador.revelarNavio(@computador.getPosicao(event.x, event.y))
           #verificar se alguém ganhou
@@ -101,7 +100,7 @@ update do
       #vai entrar nesse loop enquanto não sair uma posição que ainda não foi jogada
       loop do
         mapeamento = mapeamento_aleatorio((21..519), (101..599)) # intervalo do jogador já definido
-        break if !@computador.posicaoJaJogada?(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1]))
+        break if !@computador.posicaoJaJogada?(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1])) || !@computador.haPosicoesNaoJogadas()
       end
       @computador.definirPosicaoComoJogada(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1])) # adiciona a posição jogada no array de posições jogadas
       # print @computador.jogadas
