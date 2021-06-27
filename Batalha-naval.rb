@@ -1,13 +1,12 @@
 require "ruby2d"
-require_relative "./grid.rb"
-require_relative "./computador.rb"
+require_relative "./Tabuleiro.rb"
 
 set background: Image.new("./images/fundo.png")
 set width: 1155, height: 600
 set title: "BATALHA NAVAL"
 
 orientacaoNavio = 0 #true significa que o jogador quer colocar o navio na Horizontal
-@tabuleiro = Grid.new
+@tabuleiro = Tabuleiro.new(0, "USERW", 250,25)
 start = false # var. para saber se alguma tecla já foi pressionada
 @vezDoComputador = false
 navios = [6, 4, 3, 3, 1]
@@ -17,6 +16,10 @@ previsualizacao = Image.new("./images/porta_avioes.png", width: 300, x: 600, y: 
 @ganhador = Image.new("./images/medal.png", width: 200, height: 200, x: 180, y: 200, z: 40, opacity: 0)
 @mensagemJoganovamente = Text.new("Click aqui para jogar de novo", x: 55, y: 430, z: 100, size: 30, color: "white")
 @mensagemJoganovamente.opacity = 0
+@message = Text.new("ESCOLHA AS POSIÇÕES PARA OS BARCOS", size: 25, x: 520)
+@messageOrientacaoNavio = Text.new("O barco será inserido na Horizontal", size: 20, x: 640, y: 120)
+@messageMudarOrientacao = Text.new("Clique em Espaço para mudar a orientação", size: 20, x: 615, y: 150)
+
 def mapeamento_aleatorio(intervalo_x, intervalo_y)
   # retorna um valor aleatório para x e y, dados seus intervalos
   # retorna também uma orientação, 0 ou 90
@@ -37,14 +40,14 @@ on :mouse_down do |event|
           previsualizacao = Image.new("./images/navio_de_guerra.png", width: 200, x: 650, y: 300, rotate: orientacaoNavio) if i == 1 #se o indice for 1, mostro o navio de guerra
           previsualizacao = Image.new("./images/navio_encouracado.png", width: 150, x: 700, y: 300, rotate: orientacaoNavio) if i == 2 or i == 3 #se o indice for 2 ou 3, mostro o navio encouraçado
           previsualizacao = Image.new("./images/submarino.png", width: 50, x: 750, y: 300, rotate: orientacaoNavio) if i == 4 # se o indice for 4, mostro o submarino
-          @botao.opacity = 100 and @mensagemInicioJogo = Text.new("Click para iniciar o jogo", x: 90, y: 300, z: 25, size: 30, color: "white") and @tabuleiro.messageOrientacaoNavio.remove and @tabuleiro.messageMudarOrientacao.remove and @tabuleiro.message.remove if i == 5 #apagando as mensagens sobre a orietação do navio        end
+          @botao.opacity = 100 and @mensagemInicioJogo = Text.new("Click para iniciar o jogo", x: 90, y: 300, z: 25, size: 30, color: "white") and @messageOrientacaoNavio.remove and @messageMudarOrientacao.remove and @message.remove if i == 5 #apagando as mensagens sobre a orietação do navio        end
         end
       else
         @ganhador.opacity = 0
         @mensagemJoganovamente.opacity = 0
         @mensagemInicioJogo.remove
         @botao.remove
-        @computador = Computador.new  #cria um novo @tabuleiro para computador
+        @computador = Tabuleiro.new(600, "pc", 850,625)  #cria um novo @tabuleiro para computador
 
         navios.each do |navio|
           loop do
@@ -55,7 +58,7 @@ on :mouse_down do |event|
         end
 
         start = true
-        @tabuleiro.message.text = "ACHE OS BARCOS"
+        @message.text = "ACHE OS BARCOS"
         @tabuleiro.esconderNavios
         @computador.esconderNavios
         @jogadas = Image.new("./images/play.png", width: 70, height: 70, x: 535, y: 300)
@@ -69,7 +72,7 @@ on :mouse_down do |event|
           #verificar se alguém ganhou
           if @computador.ganhou?
             @ganhador.opacity = 100
-            @tabuleiro.message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
+            @message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
             @mensagemJoganovamente.opacity = 100
             vitoria = Sound.new("./audio/palmas.wav")
             vitoria.play
@@ -94,11 +97,11 @@ on :key_down do |event|
   if event.key == "space" && orientacaoNavio == 0
     orientacaoNavio = 90
     previsualizacao.rotate = 90
-    @tabuleiro.messageOrientacaoNavio.text = "O barco será inserido na Vertical"
+    @messageOrientacaoNavio.text = "O barco será inserido na Vertical"
   else
     orientacaoNavio = 0
     previsualizacao.rotate = 0
-    @tabuleiro.messageOrientacaoNavio.text = "O barco será inserido na Horizontal"
+    @messageOrientacaoNavio.text = "O barco será inserido na Horizontal"
   end
 end
 
