@@ -57,6 +57,10 @@ class Grid
     @jogadas << i
   end
 
+  def removeJogada  #remove todo o array jogadas para reiniciar o jogo 
+     @jogadas.clear
+  end  
+
   # mudar o nome dessas funções
 
   def navioEncaixa?(i, tamanho_navio, orientacao)
@@ -113,7 +117,7 @@ class Grid
     @player1.each do |player1|
       player1.color = "#0F6A90"
       if temNavio?(@player1.find_index(player1))
-        @player1Navios[@player1.find_index(player1)].opacity = 0
+        @player1Navios[@player1.find_index(player1)].opacity = 5
       end
     end
   end
@@ -150,7 +154,7 @@ class Grid
     @player1.each do |player1|
       # se uma posição contem um barco mas esse barco ainda tem opacidade 0, essa parte do barco ainda não foi encontrada
       # e, assim, o jogador não ganhou
-      if temNavio?(@player1.find_index(player1)) && @player1Navios[@player1.find_index(player1)].opacity == 0
+      if temNavio?(@player1.find_index(player1)) && @player1Navios[@player1.find_index(player1)].opacity == 5
         won = false
       end
     end

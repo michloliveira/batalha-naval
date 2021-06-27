@@ -15,7 +15,8 @@ i = 0
 previsualizacao = Image.new("./images/porta_avioes.png", width: 300, x: 600, y: 300, rotate: 0)
 @botao = Rectangle.new(x: 80, y: 285, z: 20, width: 400, height: 60, color: 'green', opacity: 0)
 @ganhador = Image.new("./images/medal.png", width: 200, height: 200, x: 180, y: 200, z: 40, opacity: 0)
-
+@mensagemJoganovamente = Text.new("Click aqui para jogar de novo", x: 55, y: 430, z: 100, size: 30, color: "white")
+@mensagemJoganovamente.opacity = 0
 def mapeamento_aleatorio(intervalo_x, intervalo_y)
   # retorna um valor aleatório para x e y, dados seus intervalos
   # retorna também uma orientação, 0 ou 90
@@ -27,7 +28,6 @@ on :mouse_down do |event|
   #puts "\n"
   p @vezDoComputador
   start == true ? square = @computador.contains(event.x, event.y) : square = @tabuleiro.contains(event.x, event.y)
-
   if square && @vezDoComputador == false # só irá executar se eu estou clicando em um quadrado e se não for a vez do computador
     if !start
       if i <= 4
@@ -40,6 +40,8 @@ on :mouse_down do |event|
           @botao.opacity = 100 and @mensagemInicioJogo = Text.new("Click para iniciar o jogo", x: 90, y: 300, z: 25, size: 30, color: "white") and @tabuleiro.messageOrientacaoNavio.remove and @tabuleiro.messageMudarOrientacao.remove and @tabuleiro.message.remove if i == 5 #apagando as mensagens sobre a orietação do navio        end
         end
       else
+        @ganhador.opacity = 0
+        @mensagemJoganovamente.opacity = 0
         @mensagemInicioJogo.remove
         @botao.remove
         @computador = Computador.new  #cria um novo @tabuleiro para computador
@@ -59,6 +61,8 @@ on :mouse_down do |event|
         @jogadas = Image.new("./images/play.png", width: 70, height: 70, x: 535, y: 300)
       end
     else #o jogo iniciou
+      @ganhador.opacity = 0
+      @mensagemJoganovamente.opacity = 0
       if !@tabuleiro.posicaoJaJogada?(@computador.getPosicao(event.x, event.y))
         if @computador.temNavio?(@computador.getPosicao(event.x, event.y))
           @computador.revelarNavio(@computador.getPosicao(event.x, event.y))
@@ -66,6 +70,13 @@ on :mouse_down do |event|
           if @computador.ganhou?
             @ganhador.opacity = 100
             @tabuleiro.message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
+            @mensagemJoganovamente.opacity = 100
+            vitoria = Sound.new("./audio/palmas.wav")
+            vitoria.play
+            @computador.removeJogada
+            @tabuleiro.removeJogada
+            @jogadas.remove
+            start = false
           end
         else
           @computador.naoExisteNavio(@computador.getPosicao(event.x, event.y)) #pinta de vermelho
@@ -104,7 +115,6 @@ update do
       end
       @computador.definirPosicaoComoJogada(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1])) # adiciona a posição jogada no array de posições jogadas
       # print @computador.jogadas
-
       if @tabuleiro.temNavio?(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1]))
         @tabuleiro.revelarNavio(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1]))
         if @tabuleiro.ganhou?
@@ -112,7 +122,13 @@ update do
           @ganhador.x = 760
           @ganhador.y = 200
           @ganhador.z = 20
-          @tabuleiro.message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
+          vitoria = Sound.new("./audio/palmas.wav")
+          vitoria.play
+          @mensagemJoganovamente.opacity = 100
+          @tabuleiro.removeJogada 
+          @computador.removeJogada
+          @jogadas.remove
+          start = false
         end
       else
         @tabuleiro.naoExisteNavio(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1])) #pinta de vermelho
