@@ -57,6 +57,10 @@ class Grid
     @jogadas << i
   end
 
+  def removeJogada  #remove todo o array jogadas para reiniciar o jogo 
+     @jogadas.clear
+  end  
+
   # mudar o nome dessas funções
 
   def navioEncaixa?(i, tamanho_navio, orientacao)

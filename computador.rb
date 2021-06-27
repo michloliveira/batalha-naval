@@ -51,6 +51,10 @@ class Computador
     @jogadas.include?(i)
   end
 
+  def removeJogada #remove todo o array jogadas para reiniciar o jogo 
+    @jogadas.clear
+  end  
+
   def definirPosicaoComoJogada(i)
     @jogadas << i
   end
