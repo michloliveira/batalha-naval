@@ -121,7 +121,7 @@ class Computador
     @computer.each do |computer|
       computer.color = "#0F6A90"
       if temNavio?(@computer.find_index(computer))
-        @computerNavios[@computer.find_index(computer)].opacity = 5
+        @computerNavios[@computer.find_index(computer)].opacity = 0
       end
     end
   end
@@ -158,7 +158,7 @@ class Computador
     @computer.each do |computer|
       # se uma posição contem um barco mas esse barco ainda tem opacidade 0, essa parte do barco ainda não foi encontrada
       # e, assim, o jogador não ganhou
-      if temNavio?(@computer.find_index(computer)) && @computerNavios[@computer.find_index(computer)].opacity == 5
+      if temNavio?(@computer.find_index(computer)) && @computerNavios[@computer.find_index(computer)].opacity == 0
         won = false
       end
     end
