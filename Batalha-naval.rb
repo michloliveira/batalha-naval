@@ -74,7 +74,7 @@ on :mouse_down do |event|
             @ganhador.opacity = 100
             @message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
             @mensagemJoganovamente.opacity = 100
-            vitoria = Sound.new("./audio/palmas.wav")
+            vitoria = Sound.new("./audio/victory.wav")
             vitoria.play
             @computador.removeJogada
             @tabuleiro.removeJogada
@@ -125,7 +125,7 @@ update do
           @ganhador.x = 760
           @ganhador.y = 200
           @ganhador.z = 20
-          vitoria = Sound.new("./audio/palmas.wav")
+          vitoria = Sound.new("./audio/victory.wav")
           vitoria.play
           @mensagemJoganovamente.opacity = 100
           @tabuleiro.removeJogada 
