@@ -54,8 +54,13 @@ class Tabuleiro
     @jogadas << i
   end
 
-  def removeJogada  #remove todo o array jogadas para reiniciar o jogo
-    @jogadas.clear
+  def reiniciar  #remove os quadrados para reiniciar
+    @iconUser.remove
+    @coordenadas.remove
+    @jogador.each do |jogador|
+      jogador.remove
+    end
+    esconderNavios
   end
 
   # mudar o nome dessas funções
