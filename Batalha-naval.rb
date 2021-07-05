@@ -6,16 +6,16 @@ set width: 1155, height: 600
 set title: "BATALHA NAVAL"
 
 @orientacaoNavio = 0 #true significa que o jogador quer colocar o navio na Horizontal
-@tabuleiro = Tabuleiro.new(0, "USERW", 250,25)
+@tabuleiro = Tabuleiro.new(0, "USERW", 250, 25)
 @start = false # var. para saber se alguma tecla já foi pressionada
 @restart = false
 @vezDoComputador = false
 navios = [6, 4, 3, 3, 1]
 @i = 0
 previsualizacao = Image.new("./images/porta_avioes.png", width: 300, x: 600, y: 300, rotate: 0)
-@botao = Rectangle.new(x: 80, y: 285, z: 20, width: 400, height: 60, color: 'green', opacity: 0)
+@botao = Rectangle.new(x: 80, y: 285, z: 20, width: 400, height: 60, color: "green", opacity: 0)
 @ganhador = Image.new("./images/medal.png", width: 200, height: 200, x: 180, y: 200, z: 40, opacity: 0)
-@mensagemJoganovamente = Text.new("Click aqui para jogar de novo", x: 55, y: 430, z: 100, size: 30, color: "white",opacity: 0)
+@mensagemJoganovamente = Text.new("Click aqui para jogar de novo", x: 55, y: 430, z: 100, size: 30, color: "white", opacity: 0)
 
 @message = Text.new("ESCOLHA AS POSIÇÕES PARA OS BARCOS", size: 25, x: 520)
 @messageOrientacaoNavio = Text.new("O barco será inserido na Horizontal", size: 20, x: 640, y: 120)
@@ -48,7 +48,7 @@ on :mouse_down do |event|
           @mensagemJoganovamente.opacity = 0
           @mensagemInicioJogo.remove
           @botao.remove
-          @computador = Tabuleiro.new(600, "pc", 850,625)  #cria um novo @tabuleiro para computador
+          @computador = Tabuleiro.new(600, "pc", 850, 625)  #cria um novo @tabuleiro para computador
 
           navios.each do |navio|
             loop do
@@ -73,6 +73,7 @@ on :mouse_down do |event|
             #verificar se alguém ganhou
             if @computador.ganhou?
               @ganhador.opacity = 100
+              @ganhador.x = 790
               @message.text = "TODOS OS BARCOS FORAM ENCONTRADOS"
               @mensagemJoganovamente.opacity = 100
               vitoria = Sound.new("./audio/victory.wav")
@@ -89,9 +90,9 @@ on :mouse_down do |event|
       end
     end
   else #restart
-    @tabuleiro = Tabuleiro.new(0, "USERW", 250,25)
+    @tabuleiro = Tabuleiro.new(0, "USERW", 250, 25)
     previsualizacao = Image.new("./images/porta_avioes.png", width: 300, x: 600, y: 300, rotate: @orientacaoNavio)
-    @botao = Rectangle.new(x: 80, y: 285, z: 20, width: 400, height: 60, color: 'green', opacity: 0)
+    @botao = Rectangle.new(x: 80, y: 285, z: 20, width: 400, height: 60, color: "green", opacity: 0)
     @computador.reiniciar
     @mensagemJoganovamente.opacity = 0
     @ganhador.opacity = 0
@@ -133,7 +134,7 @@ update do
         if @tabuleiro.ganhou?
           @ganhador.opacity = 100
           @ganhador.x = 760
-          @ganhador.y = 200   #tem que mudar 
+          @ganhador.y = 200   #tem que mudar
           @ganhador.z = 20
           vitoria = Sound.new("./audio/victory.wav")
           vitoria.play
