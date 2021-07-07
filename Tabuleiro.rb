@@ -3,7 +3,7 @@ require "ruby2d"
 class Tabuleiro
   attr_accessor :message, :messageOrientacaoNavio, :messageMudarOrientacao
 
-  def initialize (deslocTabuleiro, iconeJogador, posicaoIconeEixoX, posicaoLetrasEixoX)
+  def initialize(deslocTabuleiro, iconeJogador, posicaoIconeEixoX, posicaoLetrasEixoX)
     @jogador = [] #array de objetos - quadrados
     @jogadorNavios = [] #array onde estará mapeado os navios
     @@tipos_navios = { 1 => "submarino", 3 => "navio_encouracado", 4 => "navio_de_guerra", 6 => "porta_avioes" }
@@ -21,11 +21,11 @@ class Tabuleiro
                   [20, 550], [70, 550], [120, 550], [170, 550], [220, 550], [270, 550], [320, 550], [370, 550], [420, 550], [470, 550]]
 
     @positions.each do |position| #preenchendo o tabuleiro com com os quadrados (objetos)
-    @jogador.push(Square.new(x: position[0]+ deslocTabuleiro, y: position[1], z: 0, size: 49, color: "#0F6A90"))
+      @jogador.push(Square.new(x: position[0] + deslocTabuleiro, y: position[1], z: 0, size: 49, color: "#0F6A90"))
     end
 
-    @iconUser = Image.new("./images/"+ iconeJogador +".png", width: 60, height: 60, x: posicaoIconeEixoX, y: 0)
-    @coordenadas = Text.new(" A    B    C    D    E    F    G    H    I     J", size: 25, x: posicaoLetrasEixoX, y: 70)
+    @iconUser = Image.new("./images/" + iconeJogador + ".png", width: 60, height: 60, x: posicaoIconeEixoX, y: 0)
+    @coordenadas = Text.new(" A    B    C    D    E    F    G    H    I     J    K", size: 25, x: posicaoLetrasEixoX, y: 70)
   end
 
   def contains(x, y) #funcão que verifica se o click pertence a algum quadrado
@@ -54,7 +54,7 @@ class Tabuleiro
     @jogadas << i
   end
 
-  def reiniciar  #remove os quadrados para reiniciar
+  def reiniciar #remove os quadrados para reiniciar
     @iconUser.remove
     @coordenadas.remove
     @jogador.each do |jogador|
@@ -75,8 +75,8 @@ class Tabuleiro
     # possui um caso especial para a primeira linha: se o fim do barco ficar em uma posição maior que 9, já vai estar em outra linha
     # verifica também se o fim do barco ultrapassaria a última posição
     cabe_linha_horizontal = !(((0..9) === i && i + (tamanho_navio - 1) > 9) ||
-      (!((0..9) === i) && (i + (tamanho_navio - 1)).to_s[0].to_i > (i).to_s[0].to_i) ||
-      i + (tamanho_navio - 1) > 99)
+                              (!((0..9) === i) && (i + (tamanho_navio - 1)).to_s[0].to_i > (i).to_s[0].to_i) ||
+                              i + (tamanho_navio - 1) > 99)
 
     # verifica se o barco cabe na linha vertical proposta
     cabe_linha_vertical = i + ((tamanho_navio - 1) * 10) <= 99
@@ -110,7 +110,7 @@ class Tabuleiro
           y: @jogador[i].y,
           width: 49, height: 49,
           opacity: 100,
-          )
+        )
 
         orientacao == 0 ? @jogadorNavios[i].rotate = 0 : @jogadorNavios[i].rotate = 90
         @jogador[i].color = "#87CEEB" # teste apenas; p/ destacar as casas escolhidas até o momento
@@ -141,7 +141,7 @@ class Tabuleiro
       height: 49,
       x: @jogador[i].x,
       y: @jogador[i].y,
-      )
+    )
     boom.play
     bomb = Sound.new("./audio/bomba.wav") # som de bomba quando acerta um barco
     bomb.play
@@ -150,9 +150,9 @@ class Tabuleiro
   end
 
   def naoExisteNavio(i) # pintar o quadrado de vermelho e som de agua
-  @jogador[i].color = "red"
-  agua = Sound.new("./audio/aguabomba.wav")
-  agua.play
+    @jogador[i].color = "red"
+    agua = Sound.new("./audio/aguabomba.wav")
+    agua.play
   end
 
   def ganhou?
