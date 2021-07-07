@@ -63,8 +63,6 @@ class Tabuleiro
     esconderNavios
   end
 
-  # mudar o nome dessas funções
-
   def haPosicoesNaoJogadas
     !@jogadas.include?(0..99)
   end

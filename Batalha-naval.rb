@@ -23,7 +23,7 @@ previsualizacao = Image.new("./images/porta_avioes.png", width: 300, x: 600, y: 
 
 @botao = Rectangle.new(x: 80, y: 285, z: 20, width: 400, height: 60, color: 'green', opacity: 0)
 @ganhador = Image.new("./images/winner.png", width: 200, height: 200, x: 180, y: 200, z: 40, opacity: 0)
-@mensagemJoganovamente = Text.new("Clique aqui para jogar de novo", x: 55, y: 430, z: 100, size: 30, color: "white",opacity: 0)
+@mensagemJoganovamente = Text.new("Clique  para jogar de novo", x: 55, y: 430, z: 100, size: 30, color: "white",opacity: 0)
 
 @message = Text.new("ESCOLHA AS POSIÇÕES PARA OS BARCOS", size: 25, x: 520)
 @messageOrientacaoNavio = Text.new("O barco será inserido na Horizontal", size: 20, x: 640, y: 120)
@@ -36,8 +36,6 @@ def mapeamento_aleatorio(intervalo_x, intervalo_y)
 end
 
 on :mouse_down do |event|
-  #puts event.x, event.y
-  #puts "\n"
   if @restart == false
     @start == true ? square = @computador.contains(event.x, event.y) : square = @tabuleiro.contains(event.x, event.y)
     if square && @vezDoComputador == false # só irá executar se eu estou clicando em um quadrado e se não for a vez do computador
@@ -113,7 +111,6 @@ on :mouse_down do |event|
     @mensagemJoganovamente.opacity = 0
     @ganhador.opacity = 0
     @seta.remove
-    #@perdedor.opacity = 0
     @i = 0
     @start = false
     @restart = false
@@ -145,7 +142,6 @@ update do
         break if !@computador.posicaoJaJogada?(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1])) || !@computador.haPosicoesNaoJogadas()
       end
       @computador.definirPosicaoComoJogada(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1])) # adiciona a posição jogada no array de posições jogadas
-      # print @computador.jogadas
       if @tabuleiro.temNavio?(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1]))
         @tabuleiro.revelarNavio(@tabuleiro.getPosicao(mapeamento[0], mapeamento[1]))
         if @tabuleiro.ganhou?
@@ -155,7 +151,7 @@ update do
           @music.stop
           @ganhador.opacity = 100
           @ganhador.x = 760
-          @ganhador.y = 200   #tem que mudar
+          @ganhador.y = 200   
           @ganhador.z = 20
           @loser = Sound.new("./audio/loser.wav")
           @loser.play
