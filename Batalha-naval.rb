@@ -11,6 +11,7 @@ set title: "BATALHA NAVAL"
 @music.volume = 25
 @orientacaoNavio = 0 #true significa que o jogador quer colocar o navio na Horizontal
 @tabuleiro = Tabuleiro.new(0, "captain", 250,25)
+
 @start = false # var. para saber se alguma tecla já foi pressionada
 @restart = false
 @vezDoComputador = false
@@ -19,9 +20,11 @@ navios = [6, 4, 3, 3, 1]
 @perdedor = Image.new("./images/bones.png",width: 200, height: 200, x:760, y:200, z:-20)
 @marcador = Image.new("./images/target.png", width: 49, height:49, opacity: 0)
 previsualizacao = Image.new("./images/porta_avioes.png", width: 300, x: 600, y: 300, rotate: 0)
+
 @botao = Rectangle.new(x: 80, y: 285, z: 20, width: 400, height: 60, color: 'green', opacity: 0)
 @ganhador = Image.new("./images/winner.png", width: 200, height: 200, x: 180, y: 200, z: 40, opacity: 0)
 @mensagemJoganovamente = Text.new("Clique aqui para jogar de novo", x: 55, y: 430, z: 100, size: 30, color: "white",opacity: 0)
+
 @message = Text.new("ESCOLHA AS POSIÇÕES PARA OS BARCOS", size: 25, x: 520)
 @messageOrientacaoNavio = Text.new("O barco será inserido na Horizontal", size: 20, x: 640, y: 120)
 @messageMudarOrientacao = Text.new("Clique em Espaço para mudar a orientação", size: 20, x: 615, y: 150)
@@ -81,6 +84,7 @@ on :mouse_down do |event|
               @music.stop
               @perdedor.z = 20
               @ganhador.opacity = 100
+
               @mensagemJoganovamente.opacity = 100
               vitoria = Sound.new("./audio/victory.wav")
               vitoria.play
@@ -102,8 +106,9 @@ on :mouse_down do |event|
     @message = Text.new("ESCOLHA AS POSIÇÕES PARA OS BARCOS", size: 25, x: 520)
     @messageOrientacaoNavio = Text.new("O barco será inserido na Horizontal", size: 20, x: 640, y: 120)
     @messageMudarOrientacao = Text.new("Clique em Espaço para mudar a orientação", size: 20, x: 615, y: 150)
+
     previsualizacao = Image.new("./images/porta_avioes.png", width: 300, x: 600, y: 300, rotate: @orientacaoNavio)
-    @botao = Rectangle.new(x: 80, y: 285, z: 20, width: 400, height: 60, color: 'green', opacity: 0)
+    @botao = Rectangle.new(x: 80, y: 285, z: 20, width: 400, height: 60, color: "green", opacity: 0)
     @computador.reiniciar
     @mensagemJoganovamente.opacity = 0
     @ganhador.opacity = 0
@@ -150,7 +155,7 @@ update do
           @music.stop
           @ganhador.opacity = 100
           @ganhador.x = 760
-          @ganhador.y = 200   #tem que mudar 
+          @ganhador.y = 200   #tem que mudar
           @ganhador.z = 20
           @loser = Sound.new("./audio/loser.wav")
           @loser.play
