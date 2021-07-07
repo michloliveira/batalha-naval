@@ -151,7 +151,7 @@ class Tabuleiro
 
   def naoExisteNavio(i) # pintar o quadrado de vermelho e som de agua
   @jogador[i].color = "red"
-  agua = Sound.new("./audio/boom_water.wav")
+  agua = Sound.new("./audio/aguabomba.wav")
   agua.play
   end
 
