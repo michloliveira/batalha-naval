@@ -1,6 +1,6 @@
 # Batalha Naval :anchor:
 
-Jogo para a 2ª Verificação de Aprendizagem da disciplica de Paradigmas de Linguagem de Programação, da UFAPE, período letivo 2021.1.
+Jogo para a 2ª Verificação de Aprendizagem da disciplica de Paradigmas de Linguagem de Programação, da UFAPE, período letivo 2020.1.
 
 ## :robot: Desenvolvedores
 * Emily Souza
@@ -10,13 +10,13 @@ Jogo para a 2ª Verificação de Aprendizagem da disciplica de Paradigmas de Lin
 * Michel Oliveira
 
 ## Como Executar
-Baixe o jogo e no diretório do arquivo, ultilize o seguinte comando:
+Baixe o jogo e no diretório do arquivo, utilize o seguinte comando:
 ```
 ruby Batalha-naval.rb
 ```
 
 ## :video_game: Como Jogar
-O jogador deverá, no ínicio do jogo, escolher as posições que deseja que os navios sejam escondidos. Para rotacionar um navio aperte a tecla __espaco__.
+O jogador deverá, no ínicio do jogo, escolher as posições que deseja que os navios sejam escondidos. Para rotacionar um navio aperte a tecla __espaço__.
 Ao final da escolha das posições, o jogo será iniciado.
 
 ## :eye: Regras
